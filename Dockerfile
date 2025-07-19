@@ -37,3 +37,6 @@ RUN chmod -R 775 storage bootstrap/cache
 
 # Laravel uygulamasını başlat
 CMD php artisan serve --host=0.0.0.0 --port=8000
+
+# Storage ve cache klasör izinleri
+RUN chmod -R 777 storage bootstrap/cache
