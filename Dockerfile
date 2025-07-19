@@ -20,9 +20,6 @@ RUN apt-get update && apt-get install -y \
 # Composer yükle
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Laravel için APP_KEY oluştur
-RUN php artisan key:generate
-
 # Çalışma dizinini ayarla
 WORKDIR /var/www
 
