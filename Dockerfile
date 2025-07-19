@@ -20,6 +20,9 @@ RUN apt-get update && apt-get install -y \
 # Composer yükle
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Laravel için APP_KEY oluştur
+RUN php artisan key:generate
+
 # Çalışma dizinini ayarla
 WORKDIR /var/www
 
@@ -28,7 +31,6 @@ COPY . .
 
 # Laravel bağımlılıklarını yükle
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
-
 
 # Storage ve cache klasör izinleri
 RUN chmod -R 775 storage bootstrap/cache
