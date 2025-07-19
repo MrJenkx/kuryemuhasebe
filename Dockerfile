@@ -29,8 +29,6 @@ COPY . .
 # Laravel bağımlılıklarını yükle
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# Laravel için APP_KEY oluştur
-RUN php artisan key:generate
 
 # Storage ve cache klasör izinleri
 RUN chmod -R 775 storage bootstrap/cache
