@@ -1,31 +1,40 @@
+# PHP 8.2 FPM'i temel al
 FROM php:8.2-fpm
 
-# Laravel ihtiyaçları
+# Gerekli kütüphaneleri ve PHP eklentilerini kur
 RUN apt-get update && apt-get install -y \
-    unzip \
     git \
     curl \
+    zip \
+    unzip \
     libpng-dev \
     libjpeg-dev \
     libonig-dev \
     libxml2-dev \
     libzip-dev \
     libpq-dev \
-    zip \
-    npm \
-    nodejs \
-    && docker-php-ext-install pdo pdo_pgsql mbstring zip bcmath
+    && docker-php-ext-install pdo pdo_pgsql mbstring zip bcmath gd exif
 
+# Composer'ı kur
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Çalışma dizinini ayarla
 WORKDIR /var/www
 
-COPY . .
+# Dosya sahipliğini www-data kullanıcısına ver
+RUN chown -R www-data:www-data /var/www
 
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+# www-data kullanıcısına geç
+USER www-data
 
-RUN chmod -R 777 /var/www/storage /var/www/bootstrap/cache
+# Önce sadece composer dosyalarını kopyala (cache için)
+COPY --chown=www-data:www-data composer.json composer.lock ./
 
-EXPOSE 8000
+# Proje bağımlılıklarını kur (vendor klasörünü oluşturacak)
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev --no-scripts
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+# Bütün proje dosyalarını kopyala
+COPY --chown=www-data:www-data . .
+
+# PHP-FPM'i çalıştır
+CMD ["php-fpm"]
