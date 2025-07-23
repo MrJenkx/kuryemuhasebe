@@ -1,7 +1,6 @@
-# Laravel için PHP 8.2 tabanlı resmi görüntü
 FROM php:8.2-fpm
 
-# Sistem paketleri ve Laravel ihtiyaçları
+# Laravel ihtiyaçları
 RUN apt-get update && apt-get install -y \
     unzip \
     git \
@@ -17,20 +16,16 @@ RUN apt-get update && apt-get install -y \
     nodejs \
     && docker-php-ext-install pdo pdo_pgsql mbstring zip bcmath
 
-# Composer yükle
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Çalışma dizinini ayarla
 WORKDIR /var/www
 
-# Laravel dosyalarını kopyala
 COPY . .
 
-# Laravel bağımlılıklarını yükle
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# Doğru izinler (dikkat: doğru dizinde uygulanıyor!)
 RUN chmod -R 777 /var/www/storage /var/www/bootstrap/cache
 
-# Laravel uygulamasını başlat
-CMD php artisan serve --host=0.0.0.0 --port=8000
+EXPOSE 8000
+
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
