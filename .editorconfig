@@ -16,3 +16,6 @@ indent_size = 2
 
 [docker-compose.yml]
 indent_size = 4
+
+APP_KEY=base64:LZpP3eb2tbJDWZPN0v/F/MFzcbE1dOdvOBNISm1so0Q=
+
