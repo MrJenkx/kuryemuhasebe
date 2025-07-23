@@ -16,12 +16,3 @@ Route::get('/run-migrations', function () {
         return '<pre>HATA: ' . $e->getMessage() . "\n" . $e->getTraceAsString() . '</pre>';
     }
 });
-Route::get('/run-seeder', function () {
-    try {
-        Artisan::call('db:seed', ['--force' => true]);
-        $output = Artisan::output();
-        return '<pre>' . $output . '</pre>';
-    } catch (\Exception $e) {
-        return '<pre>HATA: ' . $e->getMessage() . "\n" . $e->getTraceAsString() . '</pre>';
-    }
-});
