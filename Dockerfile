@@ -37,3 +37,6 @@ CMD php artisan serve --host=0.0.0.0 --port=8000
 
 # Storage ve cache klasör izinleri
 RUN chmod -R 777 storage bootstrap/cache
+
+RUN chmod -R 777 /var/www/html/storage
+RUN chmod -R 777 /var/www/html/bootstrap/cache
