@@ -7,6 +7,8 @@ RUN apt-get update && apt-get install -y \
     curl \
     zip \
     unzip \
+    nodejs \
+    npm \
     libpng-dev \
     libjpeg-dev \
     libonig-dev \
